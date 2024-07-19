@@ -1,0 +1,26 @@
+ >> prob3_3
+iter = 39776
+lambda = 1.000000e-01
+iter = 39776
+Linear convergence rate by original definition: 1.000000e+00
+Linear convergence by 1 - (lambda+σ_min(A'A))/(lambda+σ_max(A'A)): 0.999344
+iter = 2091
+lambda = 1
+iter = 2091
+Linear convergence rate by original definition: 1.000001e+00
+Linear convergence by 1 - (lambda+σ_min(A'A))/(lambda+σ_max(A'A)): 0.996333
+iter = 281
+lambda = 10
+iter = 281
+Linear convergence rate by original definition: 1.000001e+00
+Linear convergence by 1 - (lambda+σ_min(A'A))/(lambda+σ_max(A'A)): 0.967195
+iter = 40
+lambda = 100
+iter = 40
+Linear convergence rate by original definition: 1.000000e+00
+Linear convergence by 1 - (lambda+σ_min(A'A))/(lambda+σ_max(A'A)): 0.748335
+iter = 23
+lambda = 200
+iter = 23
+Linear convergence rate by original definition: 1.000000e+00
+Linear convergence by 1 - (lambda+σ_min(A'A))/(lambda+σ_max(A'A)): 0.597987
