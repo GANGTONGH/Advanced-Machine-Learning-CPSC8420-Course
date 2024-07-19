@@ -1,0 +1,180 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsbsy,amssymb,verbatim,fullpage,ifthen,graphicx,bm,amsfonts,amsthm,url}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\newcommand{\mfile}[1]  {{\small \verbatiminput{./#1}}} % Jeff Fessler, input matlab file
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+%\newcommand*{\qed}{\hfill\ensuremath{\blacksquare}}%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\minimize}{\operatorname*{minimize\ }}
+\newcommand{\maximize}{\operatorname*{maximize}}
+\newcommand{\opdet}[1]{\operatorname{\textbf{det}}\left(#1\right)}
+\newcommand{\optr}[1]{\operatorname{\textbf{tr}}\left(#1\right)}
+\newcommand{\AnswerDefine}{}
+\newcommand{\answer}[2][blue]{\ifdefined\AnswerDefine{\color{#1}\it#2}\fi}
+\newcommand{\mtx}[1]{\mathbf{#1}}
+\newcommand{\vct}[1]{\mathbf{#1}}
+\def \lg       {\langle}
+\def \rg       {\rangle}
+\def \mA {\mtx{A}}
+\def \mF {\mtx{F}}
+\def \mG {\mtx{G}}
+\def \mI {\mtx{I}}
+\def \mJ {\mtx{J}}
+\def \mU {\mtx{U}}
+\def \mS {\mtx{S}}
+\def \mV {\mtx{V}}
+\def \mW {\mtx{W}}
+\def \mLambda {\mtx{\Lambda}}
+\def \mSigma {\mtx{\Sigma}}
+\def \mX {\mtx{X}}
+\def \mY {\mtx{Y}}
+\def \mZ {\mtx{Z}}
+\def \zero     {\mathbf{0}}
+\def \vzero    {\vct{0}}
+\def \vone    {\vct{1}}
+\def \va {\vct{a}}
+\def \vg {\vct{g}}
+\def \vu {\vct{u}}
+\def \vv {\vct{v}}
+\def \vx {\vct{x}}
+\def \vy {\vct{y}}
+\def \vz {\vct{z}}
+\def \vphi {\vct{\phi}}
+\def \vmu {\vct{\mu}}
+\def \R {\mathbb{R}}
+\def \mL {\mtx{L}}
+
+%\newcommand{\st}{\operatorname*{\ subject\ to\ }}
+\usepackage{algorithm,algpseudocode}
+\usepackage{xspace}
+% Add a period to the end of an abbreviation unless there's one
+% already, then \xspace.
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+
+\def\eg{\emph{e.g}\onedot} \def\Eg{\emph{E.g}\onedot}
+\def\ie{\emph{i.e}\onedot} \def\Ie{\emph{I.e}\onedot}
+\def\cf{\emph{c.f}\onedot} \def\Cf{\emph{C.f}\onedot}
+\def\etc{\emph{etc}\onedot} \def\vs{\emph{vs}\onedot}
+\def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\def\etal{\emph{et al}\onedot} \def\st{\emph{s.t}\onedot}
+\pagestyle{plain}
+
+\title{{\bf Homework Set 4, CPSC 8420, Spring 2022}} % Change to the appropriate homework number
+\author{\Large\underline{Last Name, First Name}}
+\date{\textbf{\Large\textcolor{red}{Due 04/17/2022, Sunday, 11:59PM EST}}} % put your name in the LastName, FirstName format
+%\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+Considering soft margin SVM, where we have the objective and constraints as follows:
+\begin{equation}\label{eq:1}
+	\begin{aligned}
+		min\;\; &\frac{1}{2}||w||_2^2 +C\sum\limits_{i=1}^{m}\xi_i\\s.t.  \;\; y_i(w^Tx_i + &b)  \geq 1 - \xi_i \;\;(i =1,2,...m)\\\xi_i \geq &0 \;\;(i =1,2,...m)
+	\end{aligned}
+\end{equation}
+Now we formulate another formulation as:
+\begin{equation}
+	\begin{aligned}
+		min\;\; &\frac{1}{2}||w||_2^2 +\frac{C}{2}\sum\limits_{i=1}^{m}\xi_i^2\\s.t.  \;\; y_i(w^Tx_i + &b)  \geq 1 - \xi_i \;\;(i =1,2,...m)
+	\end{aligned}
+\end{equation}
+\begin{enumerate}
+	\item Different from Eq. (\ref{eq:1}), we now drop the non-negative constraint for $\xi_i$, please show that optimal value of the objective will be the same when $\xi_i$ constraint is removed.\\ \\
+	In eqn. (2), since the new regulational term $\frac{C}{2}\xi_i^2$ is positive by definition, so there is no need to impose the positive constraints on $\xi_i$.
+	\item What's the generalized Lagrangian of the new soft margin SVM optimization problem?\\ \\
+	The generalized Lagrangian objective function is: 
+	\begin{equation}
+		\mL(w,b,\alpha,\beta) = \frac{1}{2}\|w\|^2+\frac{C}{2}\sum_{i=1}^{n}\xi_i^2-\sum_{i=1}^{n}\alpha_i[y_i(w^Tx_i+b)-1+\xi_i]
+	\end{equation}
+	.
+	\item Now please minimize the Lagrangian with respect to $w, b$, and $\xi$.\\ \\
+	In the Lagrangian formulation, we have: 
+	\begin{equation}
+				\begin{cases}
+			\frac{\partial L}{\partial w}=0&\\
+			\frac{\partial L}{\partial b}=0&\\
+			\frac{\partial L}{\partial \xi_i}=0&\\
+		\end{cases}
+			\end{equation}
+	
+	, from which we have:
+	
+	\[
+	\begin{cases}
+		w-\sum_{i=1}^{n}\alpha_iy_ix_i=0&\\
+		\sum_{i=1}^{n}\alpha_iy_i=0&\\
+		C\xi_i-\alpha_i=0&\\
+	\end{cases}
+	\]
+	
+	
+	\item What is the dual of this version soft margin SVM optimization problem? (should be similar to Eq. (10) in the slides)\\ \\
+	Plug the results Eqn. (4) from the previous problem into Eqn. (3), we have:
+	\begin{equation}
+		\begin{aligned}
+			L(\alpha) &= \frac{1}{2}\|w\|^2 + \frac{C}{2}\sum_{i=1}^{n}\xi_i^2 - \sum_{i=1}^{n}\alpha_i[y_i(w^Tx_i+b)-1 + \xi_i]\\
+			&= \frac{1}{2}w^T\sum_{i=1}^{n}\alpha_iy_ix_i + \frac{C}{2}\sum_{i=1}^{n}\xi_i^2 - w^T\sum_{i=1}^{n}\alpha_iy_ix_i - \sum_{i=1}^{n}\alpha_iy_ib + \sum_{i=1}^{n}\alpha_i - \sum_{i=1}^{n}\alpha_i\xi_i\\
+			&= -\frac{1}{2}w^T\sum_{i=1}^{n}\alpha_iy_ix_i + \frac{C}{2}\sum_{i=1}^{n}\xi_i^2 + \sum_{i=1}^{n}\alpha_i - \sum_{i=1}^{n}\alpha_i\xi_i\\
+			&= -\frac{1}{2}(\sum_{i=1}^{n}\alpha_iy_ix_i)^T\sum_{i=1}^{n}\alpha_iy_ix_i + \sum_{i=1}^{n}\alpha_i + \frac{C}{2}\sum_{i=1}^{n}\xi_i^2 - \sum_{i=1}^{n}\alpha_i\xi_i\\
+			&= -\frac{1}{2}\sum_{i=1}^{n}\sum_{j=1}^{n}\alpha_i\alpha_jy_iy_jx_i^Tx_j + \sum_{i=1}^{n}\alpha_i + \frac{1}{2}\frac{1}{C}\sum_{i=1}^{n}\alpha_i^2 - \frac{1}{C}\sum_{i=1}^{n}\alpha_i^2 \\
+			&= -\frac{1}{2}\sum_{i=1}^{n}\sum_{j=1}^{n}\alpha_i\alpha_jy_iy_jx_i^Tx_j + \sum_{i=1}^{n}\alpha_i - \frac{1}{2C}\sum_{i=1}^{n}\alpha_i^2
+		\end{aligned}
+	\end{equation}
+	
+	\item Please analysis bias-variance trade-off when $C$ increases.\\ \\
+	$\xi_i$ is the distance of the falsely classified data point $x_i$ to its corresponding margin. Therefore, $C$ in the objective $L$ weights the errors of the model coming from these non-separable data points. As $C$ increases, these falsely classified data points will yield more penalty on the optimization objective, and will restrict the margin $\gamma$ from increasing and including too many unseparable data points. And since $\gamma=\frac{2}{\|w\|}$, larger C leads to larger $\|w\|$. To conclude, when $C$ decreases the bias and increases the variance.
+	
+\end{enumerate}
+
+\section*{Problem 2}
+Recall vanilla SVM objective:
+\begin{equation}
+\begin{aligned}
+L(w,b,\alpha) = \frac{1}{2}||w||_2^2 - \sum\limits_{i=1}^{m}\alpha_i[y_i(w^Tx_i + b) - 1] \; \quad s.t. \quad \alpha_i \geq 0
+\end{aligned}
+\end{equation}
+If we denote the margin as $\gamma$, and vector $\alpha=[\alpha_1, \alpha_2, \dots, \alpha_m]$, now please show $\gamma^2*\|\alpha\|_1=1$.\\ \\
+
+In vanilla SVM, to minimize the objective $L(w,b,\alpha)$, we have $\frac{\partial{L}}{\partial{w}}=w-\sum_{i=1}^{m}\alpha_iy_ix_i=0$, from which we get
+\begin{equation}
+	w=\sum_{i=1}^{m}\alpha_iy_ix_i
+\end{equation}
+From the geometric relations, we know that $\gamma=\frac{1}{\|w\|_2}$. Therefore, the equation to be proven $\gamma^2\|\alpha\|_1=1$ is equivalent to:
+\begin{equation}
+	\begin{aligned}
+		\|\alpha\|_1&=\sum_{i=1}^{m}|\alpha_i|\\
+		&=\sum_{i=1}^{m}\alpha_i\\
+		&=1/\gamma^2\\
+		&=\|w\|_2^2\\
+		&=(\sum_{i=1}^{m}\alpha_iy_ix_i)^2\\
+		&=\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_jx^T_ix_j
+	\end{aligned}
+\end{equation}
+, where the absolute values on $\alpha_i$ were dropped since we have the constraint $\alpha_i \geq 0$ by definition. 
+From eqn. (8), equivalent to the original problem, we can alternatively prove: $\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_jx^T_ix_j-\sum_{i=1}^{m}\alpha_i=0$.
+From $\frac{\partial{L}}{\partial{w}}=0$, we have $=\sum_{i=1}^{m}\alpha_iy_i=0$. Plug into eqn. (8), we have:\\
+\begin{equation}
+	\begin{aligned}
+		&\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_jx^T_ix_j-\sum_{i=1}^{m}\alpha_i\\
+		&=\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_jx^T_ix_j-\sum_{i=1}^{m}\alpha_i+b\times\sum_{i=1}^{m}\alpha_iy_i\\
+		&=\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_i\alpha_jy_iy_jx^T_ix_j+b\sum_{i=1}^{m}\alpha_iy_i-\sum_{i=1}^{m}\alpha_i\\
+		&=\sum_{i=1}^{m}\alpha_iy_ix^T_i \sum_{j=1}^{m}\alpha_jy_jx_j+b\sum_{i=1}^{m}\alpha_iy_i-\sum_{i=1}^{m}\alpha_i\\
+		&=\sum_{j=1}^{m}(\sum_{i=1}^{m}\alpha_iy_ix^T_i)\alpha_jy_jx_j+b\sum_{i=1}^{m}\alpha_iy_i-\sum_{i=1}^{m}\alpha_i\\
+		&=\sum_{j=1}^{m}w^T\alpha_jy_jx_j+b\sum_{i=1}^{m}\alpha_iy_i-\sum_{i=1}^{m}\alpha_i\\
+		&=\sum_{i=1}^{m}w^T\alpha_iy_ix_i+b\sum_{i=1}^{m}\alpha_iy_i-\sum_{i=1}^{m}\alpha_i\\
+		&=\sum_{i=1}^{m}\alpha_iy_i(w^Tx_i)+\sum_{i=1}^{m}\alpha_iy_ib-\sum_{i=1}^{m}\alpha_i\\
+		&=\sum_{i=1}^{m}\alpha_i[y_i(w^Tx_i+b)-1]
+	\end{aligned}
+\end{equation}
+, which is the same form as the Lagrangian term in the objective function $L(w,b,\alpha) = \frac{1}{2}||w||_2^2 - \sum\limits_{i=1}^{m}\alpha_i[y_i(w^Tx_i + b) - 1]$. For this term, we always have $\sum_{i=1}^{m}\alpha_i[y_i(w^Tx_i+b)-1]=0$. Combining eqn. (7)-(9), we have: $\gamma^2*\|\alpha\|_1=1$.
+
+\end{document}
