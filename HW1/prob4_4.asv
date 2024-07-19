@@ -1,0 +1,59 @@
+clear all;
+
+data = load('/Users/gh/Desktop/! Advanced Machine Learning/HW1/housing.data');
+x = data(:, 1:13);
+y = data(:, 14);
+[n,d] = size(x);
+seed = 2; rand('state',seed); randn('state', seed);
+perm = randperm(n); % remove any possible ordering fx
+x = x(perm,:); y = y(perm);
+N = length(data)
+
+Ntrain = 300;
+Ntest = N - Ntrain;
+Xtrain = x(1:Ntrain,:); ytrain = y(1:Ntrain);
+Xtest = x(Ntrain+1:end,:); ytest = y(Ntrain+1:end);
+Xtraincent = zscore(Xtrain);
+Xtestcent = zscore(Xtest);
+
+l_mseTrain = [];
+l_mseTest = [];
+
+lambdas = [0 logspace(-10,10,10)]
+
+for lambda = lambdas
+    Ntest = N - Ntrain;
+
+    Xtrain = x(1:Ntrain,:); ytrain = y(1:Ntrain);
+    %Standardization
+    Xtraincent = zscore(Xtrain); 
+    Xtest = x(Ntrain+1:end,:); ytest = y(Ntrain+1:end);
+
+    XtrainApp = [ones(Ntrain,1) Xtraincent];
+    XtestApp = [ones(Ntest,1) Xtestcent];
+
+    beta_hat = inv(XtrainApp'*XtrainApp + lambda*eye(14))*XtrainApp'*ytrain;
+    
+    ytrainPred = beta_hat' * XtrainApp'
+    ytestPred = beta_hat' * XtestApp'
+
+    seTrain = 0;
+    for i = 1:Ntrain
+        seTrain = (ytrainPred(i) - ytrain(i))^2 + seTrain;
+    end
+    mseTrain = seTrain/Ntrain;
+    l_mseTrain = [l_mseTrain, mseTrain];
+    
+    seTest = 0;
+    for i = 1:Ntest
+        seTest = (ytestPred(i) - ytest(i))^2 + seTest;
+    end
+    mseTest = seTest/Ntest;
+    l_mseTest = [l_mseTest, mseTest];
+end
+
+l_mseTest
+l_mseTrain
+
+%%
+ytestPred
