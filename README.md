@@ -3,19 +3,19 @@ This GitHub repository contains the assignments and projects of the Advanced Mac
 
 # Course outline
 * Function Minimization
-  * Entropy of Informatics
+  * Information Entropy
   * Newton-Raphson Method
   * Gradient Descent (GD)
     * Convergence of GD
     * Heavy Ball Method
     * Back Tracking Line Search
   * Stochastic Gradient Descent (SGD)
-* Supervise learning
+* Supervised learning
   * Linear Regression
     * Lanczos Algorithm
     * Projection Matrix
   * K Nearest Neighbors (KNN)
-  * Exploring Overfitting
+  * Overfitting
     * Subset Selection
       * Best Subset Selection
       * Forward Stepwise Selection
@@ -25,12 +25,12 @@ This GitHub repository contains the assignments and projects of the Advanced Mac
     * Karush-Kuhn-Tucker (KKT) Conditions
   * Logistic Regression
     * Likelihood Function
-* Data Dimension Reduction
+* Dimension Reduction
   * Principal Component Analysis (PCA)
   * Linear Discriminate Analysis (LDA)
-* Unspuervise learning
+* Unsupervised learning
   * Clustering
-    * Kmeans, Kmedoid, Kmedian
+    * K-means, K-medoids, K-medians
     * Spectral Clustering
       * Graph theory
         * Edge Cut
