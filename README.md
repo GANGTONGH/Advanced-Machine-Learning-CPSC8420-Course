@@ -46,3 +46,6 @@ This GitHub repository contains the assignments and projects of the Advanced Mac
 * Naïve Bayes
   * Laplacian Smoothing
   * Bayes Decision Boundary
+
+# Acknowledgements
+I would like to thank Dr. Kai Liu for his clear and insightful explanation of the theories of various machine learning methods. I would also like to thank Zhenzhen Zhang for her collaboration in the final project.
