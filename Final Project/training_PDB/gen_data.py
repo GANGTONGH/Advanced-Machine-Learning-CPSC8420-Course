@@ -119,9 +119,4 @@ if len(pdb_list) == len(chain_list):
   
 else:
     print("Error")
-    raise Exception("Lengths of pdb_list and chain_list unequal. Check list generated with Mathematica.")
-
-
-
-
 # print(statis)
