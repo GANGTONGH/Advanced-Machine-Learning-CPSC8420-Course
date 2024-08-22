@@ -10,27 +10,31 @@ def usage():
     print("usage: nn-statis.py CA_NN_Infor data")
     sys.exit(1)
 
-def read_ca_nn_infor(filename):
+# Decide format of well potential from CA_NN_info
+# based on possible SSE
+def read_ca_nn_info(in_filename):
     map_list = []
     range_list = []
     steps_list = []
-    with open(filename, 'r') as f:
-        for line in f:
-            if line.startswith("#"):
+    with open(in_filename, 'r') as in_file:
+        for line in in_file:
+            if line[0] == "#":
                 continue
             parts = line.split()
             if len(parts) > 1:
                 map_list.append(parts[0])
                 steps_list.append(len(parts) - 1)
                 range_list.append([float(x) for x in parts[1:]])
+        in_file.close()
     return map_list, range_list, steps_list
 
-def read_ca_nn_data(filename, cut, map_list, steps_list):
+def read_ca_nn_data(in_filename, cut, map_list, steps_list):
+    # Initialize
     statis = np.zeros((len(map_list), len(map_list), len(map_list), max(steps_list) // 2), dtype=int)
     res_nrec = np.zeros(len(map_list), dtype=int)
 
-    with open(filename, 'r') as f:
-        for line in f:
+    with open(in_filename, 'r') as in_file:
+        for line in in_file:
             parts = line.split()
             i0 = map_list.index(parts[0])
             i1 = map_list.index(parts[1])
@@ -50,7 +54,7 @@ def read_ca_nn_data(filename, cut, map_list, steps_list):
                 res_nrec[i1] += 1
     return statis, res_nrec
 
-def perform_bayiason_statistics(statis, res_nrec, steps_list, map_list):
+def perform_bayesion_statistics(statis, res_nrec, steps_list, map_list):
     for c in range(len(map_list)):
         states = steps_list[c] // 2
         print(states)
@@ -116,7 +120,7 @@ def perform_bayiason_statistics(statis, res_nrec, steps_list, map_list):
             np.savetxt(Bvector, B, fmt='%f')
 
             # Run the SVD solver
-            # subprocess.run([SVDSolver, str(M), str(N), Amatrix, Bvector, "0.00001"], check=True)
+            subprocess.run([SVDSolver, str(M), str(N), Amatrix, Bvector, "0.00001"], check=True)
 
             # Read the SVD data
             PSI_AA = np.zeros((20, states))
@@ -173,10 +177,10 @@ def main():
     if len(sys.argv) < 3:
         usage()
 
-    ca_nn_infor_file = sys.argv[1]
+    ca_nn_info_file = sys.argv[1]
     ca_nn_data_file = sys.argv[2]
 
-    map_list, range_list, steps_list = read_ca_nn_infor(ca_nn_infor_file)
+    map_list, range_list, steps_list = read_ca_nn_info(ca_nn_info_file)
 
     cut = np.zeros((len(map_list), max(steps_list) // 2 - 1))
     for i in range(len(map_list)):
@@ -184,7 +188,7 @@ def main():
             cut[i][j] = (range_list[i][2 * j + 1] + range_list[i][2 * j + 2]) / 2
 
     statis, res_nrec = read_ca_nn_data(ca_nn_data_file, cut, map_list, steps_list)
-    perform_bayiason_statistics(statis, res_nrec, steps_list, map_list)
+    perform_bayesion_statistics(statis, res_nrec, steps_list, map_list)
 
 if __name__ == "__main__":
     main()
