@@ -6,7 +6,7 @@ Created on Sat Apr 23 20:50:37 2022
 @author: gh
 """
 
-# import Bio
+import Bio
 import os
 import numpy as np
 import numpy as numpy
@@ -35,9 +35,7 @@ cullPDB_fn = "/Volumes/PortableSSD/!Advanced_Machine_Learning/Final_project/trai
 with open(cullPDB_fn, 'r') as cullPDB:
     
     pdb_chain_list = [line.split()[0] for line in cullPDB.readlines()[1:]]
-    
     pdb_list = [ s[0:4].lower() for s in pdb_chain_list ]
-    
     chain_list = [ s[4:] for s in pdb_chain_list ]
     
     cullPDB.close()
@@ -61,59 +59,69 @@ def get_res(chain, id):
         return chain[(' ', id, 'B')]
 
 if len(pdb_list) == len(chain_list):
-    '''
-    Print raw data to a file
-    '''
-    with open(raw_out_fn, 'w+') as out_file:
-        for i in range(len(pdb_list)):
-        # for i in [2212]:
-            
-            # PDB file must exist
-            if not exists('pdb' + pdb_list[i] + '.ent'): continue
-        
-            parser = PDBParser(PERMISSIVE=True)
-            structure = parser.get_structure(pdb_list[i], 'pdb' + pdb_list[i] + '.ent')
-            
-            chain = structure[0][chain_list[i]]
-            
-            chain.atom_to_internal_coordinates()
-            
-            residues = chain.get_residues()
-            l_chain = chain_length(residues)
-            
-            print(i)
-            
-            for i in range(1, l_chain - 2, 1):
+    
+    try:
+        '''
+        Print raw data to a file
+        '''
+        with open(raw_out_fn, 'w+') as out_file:
+            # for i in range(len(pdb_list)):
+            for i in [1075]:
+                print(pdb_list[i])
                 
-                # Residue must exist and non-disorder
-                if get_res(chain, i) == None or \
-                    get_res(chain, i+1)== None or \
-                    get_res(chain, i+2) == None or \
-                    get_res(chain, i).is_disordered() or \
-                    get_res(chain, i+1).is_disordered() or \
-                    get_res(chain, i+2).is_disordered() :
-                    continue
+                # PDB file must exist
+                if not exists('pdb' + pdb_list[i] + '.ent'): continue
+            
+                parser = PDBParser(PERMISSIVE=True)
+                structure = parser.get_structure(pdb_list[i], 'pdb' + pdb_list[i] + '.ent')
                 
-                p = get_res(chain, i)
-                c = get_res(chain, i+1)
-                n = get_res(chain, i+2)
-                 
-                # Must be the 20 standard amino acids
-                if p.get_resname() in protAA and c.get_resname() in protAA and n.get_resname() in protAA:
+                chain = structure[0][chain_list[i]]
+                
+                chain.atom_to_internal_coordinates()
+                
+                residues = chain.get_residues()
+                l_chain = chain_length(residues)
+                
+                print(i)
+                
+                for i in range(1, l_chain - 2, 1):
                     
-                    if p.has_id('CA') and n.has_id('CA'):
-                        CA_p = p['CA']
-                        CA_n = n['CA']
-                        # coord_p = CA_p.get_vector()
-                        # CA_c = c['CA'].get_vector()
-                        # coord_n = CA_n.get_vector()
-                        dist = CA_p - CA_n
+                    # Residue must exist and non-disorder
+                    if get_res(chain, i) == None or \
+                       get_res(chain, i+1)== None or \
+                       get_res(chain, i+2) == None or \
+                       get_res(chain, i).is_disordered() or \
+                       get_res(chain, i+1).is_disordered() or \
+                        get_res(chain, i+2).is_disordered() :
+                        continue
+                    
+                    p = get_res(chain, i)
+                    c = get_res(chain, i+1)
+                    n = get_res(chain, i+2)
+                     
+                    # Must be the 20 standard amino acids
+                    if p.get_resname() in protAA and c.get_resname() in protAA and n.get_resname() in protAA:
                         
-                        print(d3to1[p.get_resname()], d3to1[c.get_resname()], d3to1[n.get_resname()], dist, file = out_file)
-                
-        out_file.close()
-      
- 
+                        if p.has_id('CA') and n.has_id('CA'):
+                            CA_p = p['CA']
+                            CA_n = n['CA']
+                            # coord_p = CA_p.get_vector()
+                            # CA_c = c['CA'].get_vector()
+                            # coord_n = CA_n.get_vector()
+                            dist = CA_p - CA_n
+                            
+                            print(d3to1[p.get_resname()], d3to1[c.get_resname()], d3to1[n.get_resname()], dist, file = out_file)
+                    
+            out_file.close()
+            
+    except Exception:
+        pass
+  
 else:
     print("Error")
     raise Exception("Lengths of pdb_list and chain_list unequal. Check list generated with Mathematica.")
+
+
+
+
+# print(statis)
