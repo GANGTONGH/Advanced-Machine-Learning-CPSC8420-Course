@@ -5,6 +5,7 @@ Created on Sat Apr 23 20:50:37 2022
 
 @author: gh
 """
+# Transform 3D protein structures into Triplet CA distances
 
 import Bio
 import os
