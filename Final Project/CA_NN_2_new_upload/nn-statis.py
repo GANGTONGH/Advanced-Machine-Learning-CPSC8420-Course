@@ -54,7 +54,7 @@ def read_ca_nn_data(in_filename, cut, map_list, steps_list):
                 res_nrec[i1] += 1
     return statis, res_nrec
 
-def perform_bayesion_statistics(statis, res_nrec, steps_list, map_list):
+def perform_bayesian_statistics(statis, res_nrec, steps_list, map_list):
     for c in range(len(map_list)):
         states = steps_list[c] // 2
         print(states)
@@ -188,7 +188,7 @@ def main():
             cut[i][j] = (range_list[i][2 * j + 1] + range_list[i][2 * j + 2]) / 2
 
     statis, res_nrec = read_ca_nn_data(ca_nn_data_file, cut, map_list, steps_list)
-    perform_bayesion_statistics(statis, res_nrec, steps_list, map_list)
+    perform_bayesian_statistics(statis, res_nrec, steps_list, map_list)
 
 if __name__ == "__main__":
     main()
